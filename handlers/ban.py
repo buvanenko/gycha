@@ -1,11 +1,16 @@
 from vkbottle.bot import Message
+from vkbottle.exception_factory.base_exceptions import VKAPIError
 
 from bot import bot
 
 
 async def get(message: Message):
 
-    members = await bot.api.messages.get_conversation_members(message.peer_id)
+    try:
+        members = await bot.api.messages.get_conversation_members(message.peer_id)
+    except VKAPIError:
+        return "Для этого я должен быть админом беседы."
+
     for member in members.items:
         if member.member_id == message.from_id:
             if not member.is_admin and not member.is_owner:

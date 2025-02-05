@@ -23,6 +23,8 @@ async def chitchat(message: Message):
             ignore = False
         elif len(message.fwd_messages) > 0 and message.fwd_messages[0].from_id == -229271933:
             ignore = False
+    else:
+        ignore = False
 
     if ignore:
         return
