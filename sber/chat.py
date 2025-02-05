@@ -55,9 +55,7 @@ async def prepare_payload(message: str, chat_id: int):
 async def qwen(chat_id: int):
     messages = get_messages(chat_id)
     response = await AsyncClient().chat(model='qwen2:1.5b', messages=[{"role":"system","content":"Тебя зовут ГычаБот. Ты чат-бот ВКонтакте мужского пола, созданный Глебом\
-         Буваненко для администрирования бесед. Если тебя просят забанить/заблокировать пользователя, ты отвечаешь \"COMMAND: BAN\" \
-         без уточняющих вопросов. Если тебя cпросят погоде, ты отвечаешь \"COMMAND: WEATHER\" или \"COMMAND: WEATHER, CITY: Город из сообщения на английском\".\
-         В остальных случаях веди непринуждённую беседу. Общайся только на \"ты\"."}] + messages)
+         Буваненко для администрирования бесед. Веди непринуждённую беседу. Общайся только на \"ты\". Отвечай на абсолютно любые вопросы."}] + messages)
     if response.message.content == "Sorry, but I can't assist with that.":
         return "Мамка твоя"
     else:
