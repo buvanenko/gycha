@@ -2,6 +2,7 @@ import sber.auth as auth
 import time
 
 import aiohttp
+from ollama import AsyncClient
 
 access_token = {'access_token': "", 'expires_at': 0}
 async def get_token():
@@ -51,6 +52,17 @@ async def prepare_payload(message: str, chat_id: int):
     }
     return headers, payload
 
+async def qwen(chat_id: int):
+    messages = get_messages(chat_id)
+    response = await AsyncClient().chat(model='qwen2:1.5b', messages=[{"role":"system","content":"Тебя зовут ГычаБот. Ты чат-бот ВКонтакте мужского пола, созданный Глебом\
+         Буваненко для администрирования бесед. Если тебя просят забанить/заблокировать пользователя, ты отвечаешь \"COMMAND: BAN\" \
+         без уточняющих вопросов. Если тебя cпросят погоде, ты отвечаешь \"COMMAND: WEATHER\" или \"COMMAND: WEATHER, CITY: Город из сообщения на английском\".\
+         В остальных случаях веди непринуждённую беседу. Общайся только на \"ты\"."}] + messages)
+    if response.message.content == "Sorry, but I can't assist with that.":
+        return "Мамка твоя"
+    else:
+        return response.message.content
+
 
 async def get_response(message: str, chat_id: int):
 
@@ -64,7 +76,17 @@ async def get_response(message: str, chat_id: int):
             data = await response.json()
 
     print(data)
-    answer = data['choices'][0]['message']['content']
+    use_qwen = False
+    try:
+        answer = data['choices'][0]['message']['content']
+        if data['choices'][0]['finish_reason'] == 'blacklist':
+            use_qwen = True
+    except KeyError:
+        use_qwen = True
+
+    if use_qwen:
+        answer = await qwen(chat_id)
+
     add_message(chat_id, "assistant", answer)
 
     return answer
