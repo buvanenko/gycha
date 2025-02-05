@@ -1,12 +1,15 @@
 
-from handlers import weather
+from vkbottle.bot import Message
 
-async def get(command: str):
+from handlers import weather, ban
+
+async def get(message: Message, command: str):
     if "WEATHER" in command:
         if "CITY" in command:
             city = command.split("CITY: ")[1]
         else:
             city = "Krasnodar"
         return await weather.get(city)
+
     elif "BAN" in command:
-        return "Пока не умею банить, фича в разработке."
+        return await ban.get(message)
