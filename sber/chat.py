@@ -38,8 +38,8 @@ async def prepare_payload(message: str, chat_id: int):
     messages = get_messages(chat_id)
     payload={
         "model": "GigaChat",
-        "messages": [{"role":"system","content":"Тебя зовут ГычаБот. Ты чат-бот ВКонтакте мужского пола, созданный для\
-         администрирования бесед. Если тебя просят забанить/заблокировать пользователя, ты отвечаешь \"COMMAND: BAN\" \
+        "messages": [{"role":"system","content":"Тебя зовут ГычаБот. Ты чат-бот ВКонтакте мужского пола, созданный Глебом\
+         Буваненко для администрирования бесед. Если тебя просят забанить/заблокировать пользователя, ты отвечаешь \"COMMAND: BAN\" \
          без уточняющих вопросов. Если тебя cпросят погоде, ты отвечаешь \"COMMAND: WEATHER\" или \"COMMAND: WEATHER, CITY: Город из сообщения на английском\".\
          В остальных случаях веди непринуждённую беседу. Общайся только на \"ты\"."}] + messages,
         "n": 1,
@@ -62,6 +62,7 @@ async def get_response(message: str, chat_id: int):
         async with session.post(url, headers=headers, json=payload, ssl=False) as response:
             data = await response.json()
 
+    print(data)
     answer = data['choices'][0]['message']['content']
     add_message(chat_id, "assistant", answer)
 
