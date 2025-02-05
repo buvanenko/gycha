@@ -16,8 +16,8 @@ context = {}
 def get_messages(chat_id: int):
     global context
     try:
-        if len(context[chat_id]) > 15:
-            context[chat_id] = context[chat_id][-15:]
+        if len(context[chat_id]) > 6:
+            context[chat_id] = context[chat_id][-6:]
         return context[chat_id]
     except KeyError:
         return []
