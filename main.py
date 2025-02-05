@@ -14,6 +14,7 @@ async def hi_handler(message: Message):
 
 @bot.on.message()
 async def chitchat(message: Message):
+    await bot.api.messages.set_activity(peer_id=message.peer_id, type="typing")
     if "[club229271933|@gycha_bot]" in message.text:
         message.text = message.text.replace("[club229271933|@gycha_bot]", "ГычаБот")
     answer = await sber.chat.get_response(message.text, message.peer_id)
