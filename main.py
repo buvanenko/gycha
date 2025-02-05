@@ -5,6 +5,10 @@ from bot import bot
 import sber
 import handlers
 
+def generate_reply(ans):
+    string = f'"peer_id": {ans.peer_id}, "conversation_message_ids": [{ans.conversation_message_id}], \
+        "is_reply": 1'
+    return '{'+string+'}'
 
 @bot.on.message(text="пинг")
 async def hi_handler(message: Message):
@@ -38,6 +42,6 @@ async def chitchat(message: Message):
         answer = await handlers.command.get(message, command)
         sber.chat.add_message(message.peer_id, "assistant", answer)
 
-    await message.answer(answer, reply_to=message.id)
+    await message.answer(answer, forward=generate_reply(message))
 
 bot.run_forever()
