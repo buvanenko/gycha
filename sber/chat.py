@@ -8,6 +8,7 @@ async def get_token():
     global access_token
     if time.time() > access_token['expires_at']:
         access_token = await auth.get_token()
+        access_token['expires_at'] = time.time() + 900
     return access_token['access_token']
 
 context = {}
