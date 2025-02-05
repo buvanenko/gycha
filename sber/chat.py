@@ -59,7 +59,7 @@ async def get_response(message: str, chat_id: int):
     headers, payload = await prepare_payload(message, chat_id)
 
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, headers=headers, json=payload) as response:
+        async with session.post(url, headers=headers, json=payload, ssl=False) as response:
             data = await response.json()
 
     answer = data['choices'][0]['message']['content']
@@ -86,7 +86,7 @@ async def weather(data):
         "update_interval": 0
     }
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, headers=headers, json=payload) as response:
+        async with session.post(url, headers=headers, json=payload, ssl=False) as response:
             data = await response.json()
 
     return data['choices'][0]['message']['content']

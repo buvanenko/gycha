@@ -15,5 +15,5 @@ headers = {
 
 async def get_token():
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, data=payload, headers=headers) as response:
+        async with session.post(url, data=payload, headers=headers, ssl=False) as response:
             return await response.json()
